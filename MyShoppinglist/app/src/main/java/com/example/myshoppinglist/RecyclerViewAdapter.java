@@ -1,10 +1,12 @@
 package com.example.myshoppinglist;
 
+import static android.content.Context.VIBRATOR_SERVICE;
 import static com.example.myshoppinglist.R.color.buttonActive;
 import static com.example.myshoppinglist.R.color.purple_200;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter.ShoppingListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recyclerviewrow, parent, false);
-        return new RecyclerViewAdapter.ShoppingListViewHolder(view, recyclerViewInterface, shoppingListModels);
+        return new RecyclerViewAdapter.ShoppingListViewHolder(view, recyclerViewInterface, shoppingListModels, context);
     }
 
     @Override
@@ -57,6 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class ShoppingListViewHolder extends RecyclerView.ViewHolder{
         ArrayList<ShoppingListModel> models;
         View rootView;
+        Context context;
         ImageView imageView;
         TextView nameTextView;
         // Counter
@@ -64,10 +67,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         AppCompatButton add;
         AppCompatButton remove;
         int counter;
+        //Vibration: requires context to work
+        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+        final long[] patternAdd = {0, 500, 250, 500};
+        final long[] patternRemove = {0, 1250};
 
-        public ShoppingListViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface, ArrayList<ShoppingListModel> models) {
+        public ShoppingListViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface, ArrayList<ShoppingListModel> models, Context context) {
             super(itemView);
             this.models = models;
+            this.context = context;
             rootView = itemView;
             imageView = itemView.findViewById(R.id.img_avocado);
             nameTextView = itemView.findViewById(R.id.text_avocado);
@@ -115,6 +123,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 if (models.get(i).getName() == (String) nameTextView.getText()) {
                     models.get(i).setCount(counter);
                     countTextView.setText(models.get(i).getCount() + "");
+                    // Vibrate
+                    vibrator.vibrate(patternAdd, -1);
                 }
             }
 
@@ -128,6 +138,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if (models.get(i).getName() == (String) nameTextView.getText()) {
                         models.get(i).setCount(counter);
                         countTextView.setText(models.get(i).getCount() + "");
+                        // Vibrate
+                        vibrator.vibrate(patternRemove, -1);
                     }
                 }
             }
