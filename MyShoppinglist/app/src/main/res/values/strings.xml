@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">MyShoppinglist</string>
+
+    <string-array name="shopping_item_names">
+        <item>Avocado</item>
+        <item>Bread</item>
+        <item>Olive Oil</item>
+        <item>Tomato</item>
+    </string-array>
+
+    <string-array name="shopping_item_descriptions">
+        <item>The avocado (Persea americana) is a tree originating in the Americas which
+            is likely native to the highland regions of south-central Mexico to Guatemala.
+            The fruit of the plant is botanically a large berry containing a single
+            large seed. </item>
+        <item>Bread is a staple food prepared from a dough of flour (usually wheat) and water,
+            usually by baking. Throughout recorded history and around the world,
+            it has been an important part of many cultures\' diet.</item>
+        <item>Olive oil is a liquid fat obtained from olives (the fruit of Olea europaea;
+            family Oleaceae), a traditional tree crop of the Mediterranean Basin, produced by
+            pressing whole olives and extracting the oil. It is commonly used in cooking:
+            for frying foods or as a salad dressing.</item>
+        <item>The tomato is the edible berry of the plant Solanum lycopersicum,
+            commonly known as the tomato plant. The species originated in western
+            South America and Central America.
+            Its domestication and use as a cultivated food may have originated with
+            the indigenous peoples of Mexico.</item>
+
+
+    </string-array>
+
+
+</resources>
