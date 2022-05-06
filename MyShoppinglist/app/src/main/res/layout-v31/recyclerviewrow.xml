@@ -50,68 +50,117 @@
                 app:layout_constraintStart_toEndOf="@+id/img_avocado"
                 app:layout_constraintTop_toTopOf="@+id/img_avocado" />
 
+
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="47dp"
-                android:layout_marginStart="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_avocado"
                 app:layout_constraintTop_toBottomOf="@+id/text_avocado">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/remove"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_weight="1"
-                    android:background="@color/buttonActive"
-                    android:rotationX="0"
-                    android:textColor="#FFFFFF"
-                    android:visibility="invisible"
-                    app:cornerRadius="100dp"
-                    app:iconPadding="0dp"
-                    app:iconTint="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="TextContrastCheck"
-                    tools:text="-" />
-
-                <TextView
-                    android:id="@+id/count"
-                    android:layout_width="51dp"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:id="@+id/slider_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="47dp"
                     android:layout_marginStart="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-black"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textColor="#FFFFFF"
-                    android:typeface="monospace"
-                    app:layout_constraintStart_toEndOf="@+id/img_avocado"
-                    app:layout_constraintTop_toTopOf="@+id/img_avocado" />
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/add"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_weight="1"
-                    android:background="#97D5D5D5"
-                    android:rotationX="0"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="8dp"
-                    app:iconPadding="8dp"
-                    app:iconTint="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="TextContrastCheck"
-                    tools:text="+" />
+                    <TextView
+                        android:id="@+id/count_slider"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-black"
+                        android:text=""
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="#FFFFFF"
+                        android:typeface="monospace"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <SeekBar
+                        android:id="@+id/slider"
+                        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+                        android:layout_width="160dp"
+                        android:layout_height="47dp"
+                        android:indeterminateTint="#FFFFFF"
+                        android:max="25"
+                        android:progress="0"
+                        android:progressBackgroundTint="#FFFFFF"
+                        android:progressTint="#FFFFFF"
+                        android:thumbTint="#FFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/button_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="47dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/remove"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/buttonActive"
+                        android:rotationX="0"
+                        android:textColor="#FFFFFF"
+                        android:visibility="invisible"
+                        app:cornerRadius="100dp"
+                        app:iconPadding="0dp"
+                        app:iconTint="#FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TextContrastCheck"
+                        tools:text="-" />
+
+                    <TextView
+                        android:id="@+id/count_button"
+                        android:layout_width="51dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-black"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="#FFFFFF"
+                        android:typeface="monospace"
+                        app:layout_constraintStart_toEndOf="@+id/img_avocado"
+                        app:layout_constraintTop_toTopOf="@+id/img_avocado" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/add"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_weight="1"
+                        android:background="#97D5D5D5"
+                        android:rotationX="0"
+                        android:textColor="#FFFFFF"
+                        app:cornerRadius="8dp"
+                        app:iconPadding="8dp"
+                        app:iconTint="#FFFFFF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TextContrastCheck"
+                        tools:text="+" />
+                </LinearLayout>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,24 +60,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void switchControls(boolean isControlTypeButtons) {
         if (isControlTypeButtons) {
             for (int i = 0; i < shoppingListViewHolders.size(); i++) {
+
+                // Hide remove button if current count equals 0
                 if (shoppingListViewHolders.get(i).counter > 0) {
-                // Show buttons
                     shoppingListViewHolders.get(i).remove.setVisibility(View.VISIBLE);
-            }
-                shoppingListViewHolders.get(i).add.setVisibility(View.VISIBLE);
+            } else {
+                    shoppingListViewHolders.get(i).remove.setVisibility(View.INVISIBLE);
+                }
+
+                // Hide add button if current count equals 25
+                if (shoppingListViewHolders.get(i).counter < 25) {
+                    shoppingListViewHolders.get(i).add.setVisibility(View.VISIBLE);
+                } else {
+                    shoppingListViewHolders.get(i).add.setVisibility(View.INVISIBLE);
+                }
+
                 shoppingListViewHolders.get(i).countButtonTextView.setVisibility(View.VISIBLE);
                 // Update displayed count
-                shoppingListViewHolders.get(i).countButtonTextView.setText(shoppingListViewHolders.get(i).counter);
+                shoppingListViewHolders.get(i).countButtonTextView.setText(shoppingListViewHolders.get(i).models.get(i).getCount() + "");
+                // Remove sliders
+                shoppingListViewHolders.get(i).sliderContainer.setVisibility(View.GONE);
             }
 
 
             } else {
             for (int i = 0; i < shoppingListViewHolders.size(); i++) {
                 // Hide buttons
-                shoppingListViewHolders.get(i).remove.setVisibility(View.INVISIBLE);
-                shoppingListViewHolders.get(i).add.setVisibility(View.INVISIBLE);
-                shoppingListViewHolders.get(i).countButtonTextView.setVisibility(View.INVISIBLE);
-                // Show slider*/
+                shoppingListViewHolders.get(i).remove.setVisibility(View.GONE);
+                shoppingListViewHolders.get(i).add.setVisibility(View.GONE);
+                shoppingListViewHolders.get(i).countButtonTextView.setVisibility(View.GONE);
+                // Show sliders
+                shoppingListViewHolders.get(i).sliderContainer.setVisibility(View.VISIBLE);
+                shoppingListViewHolders.get(i).slider.setVisibility(View.VISIBLE);
+                shoppingListViewHolders.get(i).countSliderTextView.setVisibility(View.VISIBLE);
+                // Update displayed count
+                shoppingListViewHolders.get(i).countSliderTextView.setText(shoppingListViewHolders.get(i).models.get(i).getCount() + "");
+                shoppingListViewHolders.get(i).slider.setProgress(shoppingListViewHolders.get(i).models.get(i).getCount());
             }
         }
 
@@ -91,7 +111,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView countButtonTextView;
         AppCompatButton add;
         AppCompatButton remove;
+        LinearLayout buttonContainer;
+        // Counter Slider
+        TextView countSliderTextView;
+        SeekBar slider;
         int counter;
+        LinearLayout sliderContainer;
         //Vibration: requires context to work
         Vibrator vibrator;
         final long[] patternAdd = {0, 500, 250, 500};
@@ -106,13 +131,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             nameTextView = itemView.findViewById(R.id.text_avocado);
             vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
 
+            // Set up buttons
             add = itemView.findViewById(R.id.add);
             add.setText("+");
             add.setOnClickListener(view -> incrementCounter());
                     remove = itemView.findViewById(R.id.remove);
             remove.setText("-");
             remove.setOnClickListener(view -> decrementCounter());
-            countButtonTextView = itemView.findViewById(R.id.count);
+            countButtonTextView = itemView.findViewById(R.id.count_button);
+            buttonContainer = itemView.findViewById(R.id.button_container);
+
+            // Setup slider
+            countSliderTextView = itemView.findViewById(R.id.count_slider);
+            slider = itemView.findViewById(R.id.slider);
+            sliderContainer = itemView.findViewById(R.id.slider_container);
+            sliderContainer.setVisibility(View.GONE);
+
             initCounter();
 
             // attach onclick listener to item view
@@ -122,11 +156,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 recyclerViewInterface.onItemClick(position);
                             }
             });
+            slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    counter = progress;
+                    for (int i = 0; i < models.size(); i++) {
+                        if (models.get(i).getName() == (String) nameTextView.getText()) {
+                            models.get(i).setCount(counter);
+                            countSliderTextView.setText(models.get(i).getCount() + "");
+                        }
+                    }
+
+                }
+            });
+
         }
 
         private void initCounter() {
            counter = 0;
            countButtonTextView.setText("0");
+           countSliderTextView.setText("0");
         }
 
         @SuppressLint("ResourceAsColor")
@@ -134,16 +192,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (counter == 0){
                 remove.setVisibility(View.VISIBLE);
             }
-           counter ++;
-            for (int i = 0; i < models.size(); i++) {
-                if (models.get(i).getName() == (String) nameTextView.getText()) {
-                    models.get(i).setCount(counter);
-                    countButtonTextView.setText(models.get(i).getCount() + "");
-                    // Vibrate
-                    vibrator.vibrate(patternAdd, -1);
+            if (counter < 25) {
+                counter ++;
+                for (int i = 0; i < models.size(); i++) {
+                    if (models.get(i).getName() == (String) nameTextView.getText()) {
+                        models.get(i).setCount(counter);
+                        countButtonTextView.setText(models.get(i).getCount() + "");
+                        // Vibrate
+                        vibrator.vibrate(patternAdd, -1);
+                    }
                 }
             }
-
+            if (counter == 25) {
+                add.setVisibility(View.INVISIBLE);
+            }
         }
 
         @SuppressLint("ResourceAsColor")
@@ -161,6 +223,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
             if (counter == 0){
                 remove.setVisibility(View.INVISIBLE);
+            }
+            if (counter < 25){
+                add.setVisibility(View.VISIBLE);
             }
         }
     }
