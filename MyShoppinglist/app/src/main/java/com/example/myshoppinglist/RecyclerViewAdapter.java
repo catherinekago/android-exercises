@@ -22,6 +22,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     ArrayList<ShoppingListModel> shoppingListModels;
+    ArrayList<ShoppingListViewHolder> shoppingListViewHolders = new ArrayList<>();
 
     public RecyclerViewAdapter(Context context, ArrayList<ShoppingListModel> shoppingListModels, RecyclerViewInterface recyclerViewInterface){
         this.context = context;
@@ -35,14 +36,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter.ShoppingListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recyclerviewrow, parent, false);
-        return new RecyclerViewAdapter.ShoppingListViewHolder(view, recyclerViewInterface, shoppingListModels, context);
+        ShoppingListViewHolder viewHolder = new RecyclerViewAdapter.ShoppingListViewHolder(view, recyclerViewInterface, shoppingListModels, context);
+        shoppingListViewHolders.add(viewHolder);
+        return viewHolder;
     }
 
     @Override
     // Changes data based on the position of the items
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ShoppingListViewHolder holder, int position) {
         holder.nameTextView.setText(shoppingListModels.get(position).getName());
-        holder.countTextView.setText(String.valueOf(shoppingListModels.get(position).getCount()));
+        holder.countButtonTextView.setText(String.valueOf(shoppingListModels.get(position).getCount()));
         holder.imageView.setImageResource(shoppingListModels.get(position).getImage());
 
     }
@@ -52,14 +55,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return shoppingListModels.size();
     }
 
+    public void switchControls(boolean isControlTypeButtons) {
+        if (isControlTypeButtons) {
+            for (int i = 0; i < shoppingListViewHolders.size(); i++) {
+                if (shoppingListViewHolders.get(i).counter > 0) {
+                // Show buttons
+                    shoppingListViewHolders.get(i).remove.setVisibility(View.VISIBLE);
+            }
+                shoppingListViewHolders.get(i).add.setVisibility(View.VISIBLE);
+                shoppingListViewHolders.get(i).countButtonTextView.setVisibility(View.VISIBLE);
+                // Update displayed count
+                shoppingListViewHolders.get(i).countButtonTextView.setText(shoppingListViewHolders.get(i).counter);
+            }
+
+
+            } else {
+            for (int i = 0; i < shoppingListViewHolders.size(); i++) {
+                // Hide buttons
+                shoppingListViewHolders.get(i).remove.setVisibility(View.INVISIBLE);
+                shoppingListViewHolders.get(i).add.setVisibility(View.INVISIBLE);
+                shoppingListViewHolders.get(i).countButtonTextView.setVisibility(View.INVISIBLE);
+                // Show slider*/
+            }
+        }
+
+        }
+
     public static class ShoppingListViewHolder extends RecyclerView.ViewHolder{
         ArrayList<ShoppingListModel> models;
         View rootView;
         Context context;
         ImageView imageView;
         TextView nameTextView;
-        // Counter
-        TextView countTextView;
+        // Counter Button
+        TextView countButtonTextView;
         AppCompatButton add;
         AppCompatButton remove;
         int counter;
@@ -83,7 +112,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     remove = itemView.findViewById(R.id.remove);
             remove.setText("-");
             remove.setOnClickListener(view -> decrementCounter());
-            countTextView = itemView.findViewById(R.id.count);
+            countButtonTextView = itemView.findViewById(R.id.count);
             initCounter();
 
             // attach onclick listener to item view
@@ -97,7 +126,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         private void initCounter() {
            counter = 0;
-           countTextView.setText("0");
+           countButtonTextView.setText("0");
         }
 
         @SuppressLint("ResourceAsColor")
@@ -109,7 +138,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             for (int i = 0; i < models.size(); i++) {
                 if (models.get(i).getName() == (String) nameTextView.getText()) {
                     models.get(i).setCount(counter);
-                    countTextView.setText(models.get(i).getCount() + "");
+                    countButtonTextView.setText(models.get(i).getCount() + "");
                     // Vibrate
                     vibrator.vibrate(patternAdd, -1);
                 }
@@ -124,7 +153,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 for (int i = 0; i < models.size(); i++) {
                     if (models.get(i).getName() == (String) nameTextView.getText()) {
                         models.get(i).setCount(counter);
-                        countTextView.setText(models.get(i).getCount() + "");
+                        countButtonTextView.setText(models.get(i).getCount() + "");
                         // Vibrate
                         vibrator.vibrate(patternRemove, -1);
                     }

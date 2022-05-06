@@ -54,14 +54,16 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:buttonTint="#742EFF"
-                android:text="Buttons" />
+                android:text="Buttons"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
                 android:id="@+id/switch_slider"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:buttonTint="#742EFF"
-                android:text="Slider" />
+                android:text="Slider"
+                android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
     </LinearLayout>
 
