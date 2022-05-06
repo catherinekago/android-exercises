@@ -11,11 +11,58 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/switch_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Input type:"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="24dp"
+            android:checkedButton="@id/switch_button"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/switch_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="#742EFF"
+                android:text="Buttons" />
+
+            <RadioButton
+                android:id="@+id/switch_slider"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:buttonTint="#742EFF"
+                android:text="Slider" />
+        </RadioGroup>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

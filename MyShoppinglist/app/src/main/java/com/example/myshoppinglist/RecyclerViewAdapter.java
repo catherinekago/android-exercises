@@ -1,8 +1,6 @@
 package com.example.myshoppinglist;
 
 import static android.content.Context.VIBRATOR_SERVICE;
-import static com.example.myshoppinglist.R.color.buttonActive;
-import static com.example.myshoppinglist.R.color.purple_200;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,13 +8,11 @@ import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -68,7 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         AppCompatButton remove;
         int counter;
         //Vibration: requires context to work
-        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+        Vibrator vibrator;
         final long[] patternAdd = {0, 500, 250, 500};
         final long[] patternRemove = {0, 1250};
 
@@ -79,23 +75,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             rootView = itemView;
             imageView = itemView.findViewById(R.id.img_avocado);
             nameTextView = itemView.findViewById(R.id.text_avocado);
+            vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
 
             add = itemView.findViewById(R.id.add);
             add.setText("+");
-            add.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View view) {
-                                           incrementCounter();
-                                       }
-                                   });
+            add.setOnClickListener(view -> incrementCounter());
                     remove = itemView.findViewById(R.id.remove);
             remove.setText("-");
-            remove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    decrementCounter();
-                }
-            });
+            remove.setOnClickListener(view -> decrementCounter());
             countTextView = itemView.findViewById(R.id.count);
             initCounter();
 
