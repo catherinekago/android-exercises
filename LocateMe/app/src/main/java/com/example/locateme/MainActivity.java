@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,14 +18,18 @@ import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Random;
 
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,13 +104,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Boolean isLatitudeValid = Math.abs(Double.parseDouble(latitude.getText().toString())) <= LATITUDE_MAX;
 
         // Perform localization if values are valid
-        if (isLongitudeValid && isLatitudeValid){
+        if (isLongitudeValid && isLatitudeValid) {
             openGoogleMaps();
 
             // Show toast if any given value is out of range
-        } else if (!isLongitudeValid && !isLatitudeValid){
+        } else if (!isLongitudeValid && !isLatitudeValid) {
             showToast("Error! Required LONG between -180 and 180, and LAT between: -90 and 90");
-        } else if (!isLongitudeValid){
+        } else if (!isLongitudeValid) {
             showToast("Please enter a LONG value between -180 and 180");
         } else {
             showToast("Please enter a LAT value between -90 and 90");
@@ -122,28 +128,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void showToast(String text) {
         Toast errorToast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT);
-        errorToast.setGravity(Gravity.TOP,0,0);
+        errorToast.setGravity(Gravity.TOP, 0, 0);
         errorToast.show();
     }
 
     public void locateMe(View view) {
         // Get current location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != -1 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != -1) {
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 40);
         }
         mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location newLocation) {
                         // Got last known location. In some rare situations this can be null.
                         if (newLocation != null) {
                             // Logic to handle location object
                             location = newLocation;
+                            longitude.setText(location.getLongitude() + "");
+                            latitude.setText(location.getLatitude() + "");
+                        } else {
 
                         }
                     }
                 });
-
     }
 
     @Override
@@ -179,8 +188,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Create random values for longitude and latitude and display them in the input fields
     private void randomInput() {
         Random r = new Random();
-        double randomLongitude = LONGITUDE_MAX + (LONGITUDE_MAX - LONGITUDE_MIN) * r.nextDouble();
-        double randomLatitude = LATITUDE_MAX + (LATITUDE_MAX - LATITUDE_MIN) * r.nextDouble();
+        double randomLongitude = LONGITUDE_MIN + (LONGITUDE_MAX - LONGITUDE_MIN) * r.nextDouble();
+        double randomLatitude = LATITUDE_MIN + (LATITUDE_MAX - LATITUDE_MIN) * r.nextDouble();
         longitude.setText(randomLongitude + "");
         latitude.setText(randomLatitude + "");
     }
