@@ -6,11 +6,13 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // Perform localization if values are valid
         if (isLongitudeValid && isLatitudeValid){
+            openGoogleMaps();
 
             // Show toast if any given value is out of range
         } else if (!isLongitudeValid && !isLatitudeValid){
@@ -107,6 +110,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             showToast("Please enter a LAT value between -90 and 90");
         }
 
+    }
+
+    // Open google maps with the provided coordinates
+    private void openGoogleMaps() {
+        Uri intentUri = Uri.parse("geo:" + latitude.getText() + "," + longitude.getText());
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     private void showToast(String text) {
