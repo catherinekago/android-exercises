@@ -1,16 +1,14 @@
 package com.example.highlightoftheday;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class MainActivity extends AppCompatActivity {
     private FloatingActionButton add;
@@ -24,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up button
         add = findViewById(R.id.add);
         add.setOnClickListener(view -> goToHighlightCreator());
+
     }
 
 

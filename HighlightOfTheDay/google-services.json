@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "872188555997",
+    "project_id": "highlight-of-the-day-3cda5",
+    "storage_bucket": "highlight-of-the-day-3cda5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872188555997:android:9a4bd97f8bcb040f71e134",
+        "android_client_info": {
+          "package_name": "com.example.highlightoftheday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872188555997-b8j4jm884dud9g7ac32jt6roqtgehrhk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYy25D2lhR3xaeg0iglRWTh9PpMq1RWj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872188555997-b8j4jm884dud9g7ac32jt6roqtgehrhk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

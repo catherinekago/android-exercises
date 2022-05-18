@@ -15,12 +15,12 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.HighlightViewHolder> {
 
     Context context;
-    ArrayList<HighlightModel> highlightModels;
+    ArrayList<FirebaseHighlights> firebaseHighlights;
     ArrayList<HighlightViewHolder> highlightViewHolders = new ArrayList<HighlightViewHolder>();
 
-    public RecyclerViewAdapter(Context context, ArrayList<HighlightModel> highlightModels) {
+    public RecyclerViewAdapter(Context context, ArrayList<FirebaseHighlights> firebaseHighlights) {
         this.context = context;
-        this.highlightModels = highlightModels;
+        this.firebaseHighlights = firebaseHighlights;
     }
 
     @NonNull
@@ -29,7 +29,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public HighlightViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.highlight_view, parent, false);
-        HighlightViewHolder viewHolder = new HighlightViewHolder(view, highlightModels, context);
+        HighlightViewHolder viewHolder = new HighlightViewHolder(view, firebaseHighlights, context);
         highlightViewHolders.add(viewHolder);
         return viewHolder;
     }
@@ -37,9 +37,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     // Changes data based on the position of the items
     public void onBindViewHolder(@NonNull HighlightViewHolder holder, int position) {
-        holder.dateTextView.setText(highlightModels.get(position).getDate().toString());
-        holder.imageView.setImageResource(highlightModels.get(position).getImage());
-        holder.descriptionTextView.setText(String.valueOf(highlightModels.get(position).getDescription()));
+        //holder.dateTextView.setText(firebaseHighlights.get(position).getDate().toString());
+        //holder.imageView.setImageResource(firebaseHighlights.get(position).getImage());
+        //holder.descriptionTextView.setText(String.valueOf(firebaseHighlights.get(position).getDescription()));
     }
 
     @Override
@@ -48,14 +48,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class HighlightViewHolder extends RecyclerView.ViewHolder {
-        ArrayList<HighlightModel> models;
+        ArrayList<FirebaseHighlights> models;
         View rootView;
         Context context;
         ImageView imageView;
         TextView dateTextView;
         TextView descriptionTextView;
 
-        public HighlightViewHolder(@NonNull View itemView, ArrayList<HighlightModel> models, Context context) {
+        public HighlightViewHolder(@NonNull View itemView, ArrayList<FirebaseHighlights> models, Context context) {
             super(itemView);
             this.models = models;
             this.context = context;
