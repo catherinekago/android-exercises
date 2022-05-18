@@ -26,7 +26,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     ArrayList<ShoppingListModel> shoppingListModels;
     ArrayList<ShoppingListViewHolder> shoppingListViewHolders = new ArrayList<>();
 
-    public RecyclerViewAdapter(Context context, ArrayList<ShoppingListModel> shoppingListModels, RecyclerViewInterface recyclerViewInterface){
+    public RecyclerViewAdapter(Context context, ArrayList<ShoppingListModel> shoppingListModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.shoppingListModels = shoppingListModels;
         this.recyclerViewInterface = recyclerViewInterface;
@@ -64,7 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 // Hide remove button if current count equals 0
                 if (shoppingListViewHolders.get(i).counter > 0) {
                     shoppingListViewHolders.get(i).remove.setVisibility(View.VISIBLE);
-            } else {
+                } else {
                     shoppingListViewHolders.get(i).remove.setVisibility(View.INVISIBLE);
                 }
 
@@ -83,7 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
 
 
-            } else {
+        } else {
             for (int i = 0; i < shoppingListViewHolders.size(); i++) {
                 // Hide buttons
                 shoppingListViewHolders.get(i).remove.setVisibility(View.GONE);
@@ -99,9 +99,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         }
 
-        }
+    }
 
-    public static class ShoppingListViewHolder extends RecyclerView.ViewHolder{
+    public static class ShoppingListViewHolder extends RecyclerView.ViewHolder {
         ArrayList<ShoppingListModel> models;
         View rootView;
         Context context;
@@ -135,7 +135,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             add = itemView.findViewById(R.id.add);
             add.setText("+");
             add.setOnClickListener(view -> incrementCounter());
-                    remove = itemView.findViewById(R.id.remove);
+            remove = itemView.findViewById(R.id.remove);
             remove.setText("-");
             remove.setOnClickListener(view -> decrementCounter());
             countButtonTextView = itemView.findViewById(R.id.count_button);
@@ -151,10 +151,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             // attach onclick listener to item view
             itemView.setOnClickListener(view -> {
-                            if (recyclerViewInterface != null){
-                                int position = getAdapterPosition();
-                                recyclerViewInterface.onItemClick(position);
-                            }
+                if (recyclerViewInterface != null) {
+                    int position = getAdapterPosition();
+                    recyclerViewInterface.onItemClick(position);
+                }
             });
             slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -182,18 +182,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         private void initCounter() {
-           counter = 0;
-           countButtonTextView.setText("0");
-           countSliderTextView.setText("0");
+            counter = 0;
+            countButtonTextView.setText("0");
+            countSliderTextView.setText("0");
         }
 
         @SuppressLint("ResourceAsColor")
-        private void incrementCounter(){
-            if (counter == 0){
+        private void incrementCounter() {
+            if (counter == 0) {
                 remove.setVisibility(View.VISIBLE);
             }
             if (counter < 25) {
-                counter ++;
+                counter++;
                 for (int i = 0; i < models.size(); i++) {
                     if (models.get(i).getName() == (String) nameTextView.getText()) {
                         models.get(i).setCount(counter);
@@ -209,9 +209,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         @SuppressLint("ResourceAsColor")
-        private void decrementCounter(){
-            if (counter -1 >= 0){
-                counter --;
+        private void decrementCounter() {
+            if (counter - 1 >= 0) {
+                counter--;
                 for (int i = 0; i < models.size(); i++) {
                     if (models.get(i).getName() == (String) nameTextView.getText()) {
                         models.get(i).setCount(counter);
@@ -221,10 +221,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 }
             }
-            if (counter == 0){
+            if (counter == 0) {
                 remove.setVisibility(View.INVISIBLE);
             }
-            if (counter < 25){
+            if (counter < 25) {
                 add.setVisibility(View.VISIBLE);
             }
         }

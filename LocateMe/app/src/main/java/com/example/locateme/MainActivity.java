@@ -144,12 +144,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     public void onSuccess(Location newLocation) {
                         // Got last known location. In some rare situations this can be null.
                         if (newLocation != null) {
-                            // Logic to handle location object
-                            location = newLocation;
-                            longitude.setText(location.getLongitude() + "");
-                            latitude.setText(location.getLatitude() + "");
+                            if (newLocation.getAccuracy() < 50){
+                                // Logic to handle location object
+                                location = newLocation;
+                                longitude.setText(location.getLongitude() + "");
+                                latitude.setText(location.getLatitude() + "");
+                            } else {
+                                showToast("Unreliable location determination due to low accuracy of " + newLocation.getAccuracy() + "m radius.");
+                                location = newLocation;
+                                longitude.setText(location.getLongitude() + "");
+                                latitude.setText(location.getLatitude() + "");
+                            }
                         } else {
-
+                            showToast("Cannot access location. Please make sure to enable location for this app.");
                         }
                     }
                 });
