@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,10 +35,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,8 +52,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.grpc.Context;
+
 public class HighlightCreator extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     FirebaseFirestore firebase;
+    StorageReference storageReference;
     CollectionReference highlights;
 
     EditText highlightDate;
@@ -54,12 +64,14 @@ public class HighlightCreator extends AppCompatActivity implements DatePickerDia
     EditText highlightDescription;
     AppCompatButton saveHighlight;
     ImageView highlightImage;
+    Uri currentURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highlight_creator);
         firebase = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
         highlights = firebase.collection("highlights");
 
         chooseImage = findViewById(R.id.choose_image);
@@ -167,6 +179,7 @@ public class HighlightCreator extends AppCompatActivity implements DatePickerDia
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
+                currentURI = resultUri;
                 try{
                     InputStream stream = getContentResolver().openInputStream(resultUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(stream);
@@ -221,14 +234,38 @@ public class HighlightCreator extends AppCompatActivity implements DatePickerDia
 
                             // Create new highlight object
                             Map<String, Object> highlight = new HashMap<>();
+
+                            // Put date
                             if(highlightDate.getText().toString().length() >0){
                                 highlight.put("date", new SimpleDateFormat("dd/MM/yyyy").parse(highlightDate.getText().toString()));
                             } else {
                                 highlight.put("date", new Date());
                             }
 
-                            // https://www.youtube.com/watch?v=g2Iibnnqga0&ab_channel=Foxandroid
-                            // https://www.youtube.com/watch?v=lFPmgtD4lJg&ab_channel=BrandanJones
+                            // Put image to storage
+                            Bitmap bitmap = ((BitmapDrawable) highlightImage.getDrawable()).getBitmap();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+
+                            UploadTask uploadTask = storageReference.child("images/"+currentURI.getLastPathSegment()).putFile(currentURI);
+                            // Put image reference
+                            highlight.put("imageURL", "images/"+currentURI.getLastPathSegment());
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+
+                                }
+                            });
+
+                            // Put description
                             highlight.put("description", highlightDescription.getText().toString());
 
                             // Add to collection
