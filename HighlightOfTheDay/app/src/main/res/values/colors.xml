@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="PrimaryPink">#701332</color>
+    <color name="SecondaryPink">#E4BECB</color>
 </resources>
