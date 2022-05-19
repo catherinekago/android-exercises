@@ -36,6 +36,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.squareup.okhttp3:okhttp:3.0.1'
     implementation 'com.google.firebase:firebase-firestore:23.0.2'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
 
     testImplementation 'junit:junit:4.13.2'
